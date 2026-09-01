@@ -8,9 +8,7 @@
   Reference implementation for Qwen2.5-VL-7B-Instruct
 </p>
 
-<p align="center">
-  <img src="assets/s2prune_framework.png" alt="S2Prune framework overview" width="100%">
-</p>
+![S²Prune framework overview](assets/s2prune_framework.png)
 
 S²Prune reduces the visual sequence processed by a multimodal LLM without training an auxiliary selector. It separates **where to spend the token budget** from **which local tokens to retain**:
 
