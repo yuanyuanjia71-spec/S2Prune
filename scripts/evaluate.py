@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from s2prune.allocation import default_grid_size
+from s2prune.allocation import DEFAULT_GRIDS, default_grid_size
 from s2prune.data import collect_samples, default_instruction, format_prompt
 from s2prune.metrics import pope_statistics, score_sample
 from s2prune.qwen import greedy_decode, load_model, prepare_input, s2prune_prefill
@@ -44,12 +44,14 @@ def parse_args():
     parser.add_argument("--split", default=None)
     parser.add_argument("--mmbench-lang", default="en", choices=["en", "cn", "cc"])
     parser.add_argument("--image-dir", default=None, help="Optional POPE image directory")
-    parser.add_argument("--budget", type=int, choices=[32, 64, 128], required=True)
+    parser.add_argument(
+        "--budget", type=int, choices=sorted(DEFAULT_GRIDS), required=True
+    )
     parser.add_argument(
         "--grid-size",
         type=int,
         default=None,
-        help="Defaults to 4, 5, and 8 for B=32, 64, and 128.",
+        help="Defaults to 4, 5, 8, and 9 for B=32, 64, 128, and 192.",
     )
     parser.add_argument("--instruction", default=None)
     parser.add_argument("--max-images", type=int, default=0)

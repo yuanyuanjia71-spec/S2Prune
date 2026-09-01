@@ -6,7 +6,8 @@
   "budgets": {
     "32": {"coarse_grid_size": 4},
     "64": {"coarse_grid_size": 5},
-    "128": {"coarse_grid_size": 8}
+    "128": {"coarse_grid_size": 8},
+    "192": {"coarse_grid_size": 9}
   },
   "dtype": "bfloat16",
   "attention_implementation": "eager",

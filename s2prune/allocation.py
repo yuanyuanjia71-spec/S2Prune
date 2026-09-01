@@ -17,7 +17,7 @@ from PIL import Image
 Region = Tuple[int, int, int, int]
 FP32_EPS = float(np.finfo(np.float32).eps)
 FP64_EPS = float(np.finfo(np.float64).eps)
-DEFAULT_GRIDS = {32: 4, 64: 5, 128: 8}
+DEFAULT_GRIDS = {32: 4, 64: 5, 128: 8, 192: 9}
 
 
 @dataclass(frozen=True)

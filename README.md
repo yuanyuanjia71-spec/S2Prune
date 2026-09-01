@@ -18,6 +18,7 @@ Each region first receives one token. The residual budget is allocated proportio
 B=32   -> 4x4 coarse regions
 B=64   -> 5x5 coarse regions
 B=128  -> 8x8 coarse regions
+B=192  -> 9x9 coarse regions
 ```
 
 Each region is recursively partitioned into exactly `B_g` non-overlapping cells. The full visual sequence runs through decoder Layer 0, and the local ERC score is
@@ -69,6 +70,7 @@ Expected token-count checks:
 PASS B=32  grid=4x4 visual=576->32
 PASS B=64  grid=5x5 visual=576->64
 PASS B=128 grid=8x8 visual=576->128
+PASS B=192 grid=9x9 visual=576->192
 ```
 
 ## Evaluation

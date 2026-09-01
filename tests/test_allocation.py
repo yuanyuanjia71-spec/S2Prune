@@ -11,6 +11,7 @@ from PIL import Image
 
 from s2prune.allocation import (
     build_coarse_regions,
+    default_grid_size,
     largest_remainder_allocation,
     recursive_region_cells,
     select_s2prune_tokens,
@@ -21,12 +22,13 @@ GOLDEN_SELECTED_HASHES = {
     32: "df8362790cd6c23585723b17d9cb48ff9566e3ac1311c12ac80fa1c0343672a5",
     64: "832405ce160618fee8987947ef93b408d2579db9cc17cb3530474c72d3f4171c",
     128: "889bbf89aaa06b2bb06b8a669b0ad031afe5cbd6b36c64be43d3f8fd372e9b5a",
+    192: "5f622bbcfe8c9f7023765f0ec9bfa498a7d26bb695b7545d5a2c1367a809bf1a",
 }
 
 
 class AllocationTest(unittest.TestCase):
     def test_coarse_regions_cover_grid_once(self):
-        for grid_size in (4, 5, 8):
+        for grid_size in (4, 5, 8, 9):
             coverage = np.zeros((24, 24), dtype=np.int64)
             regions = build_coarse_regions(24, 24, grid_size, grid_size)
             self.assertEqual(len(regions), grid_size**2)
@@ -50,6 +52,27 @@ class AllocationTest(unittest.TestCase):
         )
         self.assertEqual(allocation, [4, 3, 3, 3])
 
+    def test_residual_budget_is_allocated_proportionally(self):
+        allocation = largest_remainder_allocation(
+            [1.0, 2.0, 3.0], [10, 10, 10], budget=12
+        )
+        self.assertEqual(allocation, [2, 4, 6])
+
+    def test_b192_uses_9x9_grid_and_preserves_exact_budget(self):
+        generator = np.random.default_rng(192)
+        image = Image.fromarray(
+            generator.integers(0, 256, size=(97, 113, 3), dtype=np.uint8),
+            "RGB",
+        )
+        scores = torch.from_numpy(generator.normal(size=576).astype(np.float32))
+
+        self.assertEqual(default_grid_size(192), 9)
+        result = select_s2prune_tokens(scores, image, 24, 24, budget=192)
+
+        self.assertEqual(len(result.regions), 81)
+        self.assertEqual(sum(result.region_budgets), 192)
+        self.assertEqual(result.selected_indices.numel(), 192)
+
     def test_golden_selection(self):
         generator = np.random.default_rng(2026)
         image = Image.fromarray(
@@ -57,7 +80,7 @@ class AllocationTest(unittest.TestCase):
             "RGB",
         )
         scores = torch.from_numpy(generator.normal(size=576).astype(np.float32))
-        for budget, grid_size in ((32, 4), (64, 5), (128, 8)):
+        for budget, grid_size in ((32, 4), (64, 5), (128, 8), (192, 9)):
             result = select_s2prune_tokens(
                 scores, image, 24, 24, budget, grid_size
             )
