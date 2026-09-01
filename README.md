@@ -4,6 +4,12 @@ Reference implementation of S²Prune, a training-free visual-token pruning metho
 
 This release contains the Qwen2.5-VL-7B-Instruct implementation used for the main experiments. It does not contain model weights, datasets, generated predictions, or author-identifying metadata.
 
+<p align="center">
+  <img src="assets/s2prune_framework.png" alt="S2Prune framework overview" width="100%">
+</p>
+
+S²Prune allocates the visual-token budget from regional structural density, then performs response-aware local sampling after decoder Layer 0 before continuing through the remaining layers.
+
 ## Method
 
 The released configuration uses a fixed 672 × 672 image input and obtains 24 × 24 = 576 decoder-visible visual tokens after Qwen2.5-VL PatchMerger. For a coarse region `g`, structural complexity is
@@ -156,6 +162,8 @@ python scripts/check_anonymity.py
 
 ```text
 S2Prune/
+├── assets/
+│   └── s2prune_framework.png      method overview for the README
 ├── configs/
 │   └── qwen2_5_vl_7b.json       released budget and model configuration
 ├── s2prune/
