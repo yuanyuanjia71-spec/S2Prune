@@ -1,0 +1,39 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments and build output
+.venv/
+venv/
+build/
+dist/
+
+# Local datasets, models, and generated results
+data/
+models/
+checkpoints/
+outputs/
+logs/
+*.csv
+*.jsonl
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Local secrets and credentials
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Editors and operating systems
+.DS_Store
+.AppleDouble
+.idea/
+.vscode/

@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "s2prune"
+version = "1.0.0"
+description = "Training-free structure-aware visual-token pruning for multimodal language models"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+  "torch==2.4.1",
+  "transformers==4.49.0",
+  "accelerate==1.0.1",
+  "numpy==1.24.4",
+  "Pillow==10.4.0",
+  "pandas==2.0.3",
+  "pyarrow==17.0.0",
+  "safetensors>=0.4.5",
+]
+
+[tool.setuptools.packages.find]
+include = ["s2prune*"]
