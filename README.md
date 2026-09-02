@@ -8,6 +8,10 @@
   Reference implementation for Qwen2.5-VL-7B-Instruct
 </p>
 
+<p align="center">
+  <a href="https://arxiv.org/abs/2609.01224"><img src="https://img.shields.io/badge/arXiv-2609.01224-b31b1b.svg" alt="arXiv"></a>
+</p>
+
 ![S²Prune framework overview](assets/s2prune_framework.png)
 
 S²Prune reduces the visual sequence processed by a multimodal LLM without training an auxiliary selector. It separates **where to spend the token budget** from **which local tokens to retain**:
@@ -213,3 +217,19 @@ S2Prune/
 ## Scope
 
 This release targets Qwen2.5-VL-7B-Instruct with a fixed `672 × 672` image input and 576 decoder-visible visual tokens. It does not bundle model weights, benchmark datasets, cached images, generated predictions, or official leaderboard submission tools.
+
+## Citation
+
+If you find S²Prune useful, please cite our paper:
+
+```bibtex
+@misc{jia2026s2prune,
+  title         = {S$^2$Prune: Spatially Structured Visual Token Pruning for Multimodal Large Language Models},
+  author        = {Yuanyuan Jia and Shunpu Tang and Qianqian Yang},
+  year          = {2026},
+  eprint        = {2609.01224},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV},
+  url           = {https://arxiv.org/abs/2609.01224}
+}
+```
