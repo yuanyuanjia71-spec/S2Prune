@@ -5,6 +5,10 @@
 </p>
 
 <p align="center">
+  <strong>Accepted at WACV 2027.</strong>
+</p>
+
+<p align="center">
   Reference implementation for Qwen2.5-VL-7B-Instruct
 </p>
 
