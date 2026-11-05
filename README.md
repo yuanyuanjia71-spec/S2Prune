@@ -13,7 +13,6 @@
 </p>
 
 <p align="center">
-  <a href="https://wacv.thecvf.com/Conferences/2027/index.html"><img src="https://img.shields.io/badge/WACV%202027-Accepted-2563EB?style=for-the-badge" alt="Accepted at WACV 2027"></a>
   <a href="https://arxiv.org/abs/2609.01224"><img src="https://img.shields.io/badge/arXiv-2609.01224-B31B1B?style=for-the-badge&amp;logo=arxiv&amp;logoColor=white" alt="arXiv paper"></a>
 </p>
 
