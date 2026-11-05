@@ -1,22 +1,52 @@
-# S²Prune
+<h1 align="center">S²Prune</h1>
+
+<h3 align="center">
+  Spatially Structured Visual Token Pruning<br>
+  for Multimodal Large Language Models
+</h3>
 
 <p align="center">
-  <strong>Training-free, structure-aware visual-token pruning for multimodal large language models</strong>
+  <strong>Yuanyuan Jia</strong> &nbsp;·&nbsp;
+  <strong>Shunpu Tang</strong> &nbsp;·&nbsp;
+  <strong>Qianqian Yang</strong><br>
+  Zhejiang University
 </p>
 
 <p align="center">
-  <strong>Accepted at WACV 2027.</strong>
+  <img src="https://img.shields.io/badge/WACV%202027-Accepted-2563EB?style=for-the-badge" alt="Accepted at WACV 2027">
+  <a href="https://arxiv.org/abs/2609.01224"><img src="https://img.shields.io/badge/arXiv-2609.01224-B31B1B?style=for-the-badge&amp;logo=arxiv&amp;logoColor=white" alt="arXiv paper"></a>
+  <a href="https://arxiv.org/pdf/2609.01224"><img src="https://img.shields.io/badge/Paper-PDF-EA580C?style=for-the-badge" alt="Read the paper PDF"></a>
 </p>
 
 <p align="center">
-  Reference implementation for Qwen2.5-VL-7B-Instruct
+  <strong>Training-free · Structure-aware · Visual token pruning</strong>
 </p>
 
 <p align="center">
-  <a href="https://arxiv.org/abs/2609.01224"><img src="https://img.shields.io/badge/arXiv-2609.01224-b31b1b.svg" alt="arXiv"></a>
+  <a href="#overview">Overview</a> &nbsp;|&nbsp;
+  <a href="#method">Method</a> &nbsp;|&nbsp;
+  <a href="#installation">Installation</a> &nbsp;|&nbsp;
+  <a href="#quick-start">Quick Start</a> &nbsp;|&nbsp;
+  <a href="#evaluation">Evaluation</a> &nbsp;|&nbsp;
+  <a href="#citation">Citation</a>
 </p>
 
-![S²Prune framework overview](assets/s2prune_framework.png)
+---
+
+## News
+
+- 🎉 **S²Prune has been accepted to WACV 2027!**
+
+## Overview
+
+<p align="center">
+  <img src="assets/s2prune_framework.png" alt="S²Prune framework: structural-density budget allocation and response-aware local token selection" width="100%">
+</p>
+<p align="center">
+  <em>Allocate tokens by spatial structure, then select local representatives by early representation change.</em>
+</p>
+
+**Reference implementation:** Qwen2.5-VL-7B-Instruct.
 
 S²Prune reduces the visual sequence processed by a multimodal LLM without training an auxiliary selector. It separates **where to spend the token budget** from **which local tokens to retain**:
 
