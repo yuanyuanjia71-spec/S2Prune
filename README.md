@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/s2prune_logo.png" alt="S²Prune logo: scissors pruning visual tokens" width="360">
+  <img src="assets/s2prune_logo.png" alt="S²Prune logo: scissors pruning visual tokens" width="300">
 </p>
 
 <h2 align="center">
