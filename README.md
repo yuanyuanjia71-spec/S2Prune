@@ -1,9 +1,11 @@
-<h1 align="center">S²Prune</h1>
+<p align="center">
+  <img src="assets/s2prune_logo.png" alt="S²Prune logo: scissors pruning visual tokens" width="360">
+</p>
 
-<h3 align="center">
-  Spatially Structured Visual Token Pruning<br>
+<h2 align="center">
+  S²Prune: Spatially Structured Visual Token Pruning<br>
   for Multimodal Large Language Models
-</h3>
+</h2>
 
 <p align="center">
   <strong>Yuanyuan Jia</strong> &nbsp;·&nbsp;
