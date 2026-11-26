@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the S²Prune paper below."
+type: software
+title: "S²Prune: Spatially Structured Visual Token Pruning for Multimodal Large Language Models"
+version: 1.0.0
+authors:
+  - family-names: Jia
+    given-names: Yuanyuan
+  - family-names: Tang
+    given-names: Shunpu
+  - family-names: Yang
+    given-names: Qianqian
+repository-code: "https://github.com/yuanyuanjia71-spec/S2Prune"
+url: "https://arxiv.org/abs/2609.01224"
+preferred-citation:
+  type: article
+  title: "S²Prune: Spatially Structured Visual Token Pruning for Multimodal Large Language Models"
+  authors:
+    - family-names: Jia
+      given-names: Yuanyuan
+    - family-names: Tang
+      given-names: Shunpu
+    - family-names: Yang
+      given-names: Qianqian
+  journal: arXiv
+  year: 2026
+  url: "https://arxiv.org/abs/2609.01224"
