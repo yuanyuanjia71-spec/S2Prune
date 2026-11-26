@@ -1,20 +1,33 @@
 # Evaluation
 
-[← Back to README](../README.md)
+[← Back to README](../README.md) &nbsp;·&nbsp; [Method and protocol](method.md)
 
-Commands below are run from the repository root, after following the [installation instructions](../README.md#installation). The released backbone, image size, and pruning point are described in the [method guide](method.md).
+Run the commands below from the repository root after completing [installation](../README.md#installation).
 
+## Benchmark support
 
-The evaluator supports two data interfaces. Use the CLI dataset name `MMVet` for the MM-Vet benchmark.
+| Benchmark | CLI name | Data interface | Default split |
+| :--- | :--- | :--- | :--- |
+| VQAv2 | `VQAv2` | Native loader | `val` |
+| TextVQA | `TextVQA` | Native loader | `val` |
+| VizWiz | `VizWiz` | Native loader | `val` |
+| MMBench | `MMBench` | Native loader | `dev` |
+| ScienceQA | `ScienceQA` | Native loader | `test` |
+| POPE | `POPE` | Native loader | `adversarial` |
+| MME | `MME` | Native loader | `test` |
+| MMMU | `MMMU` | JSON/JSONL manifest | `validation` |
+| GQA | `GQA` | JSON/JSONL manifest | `testdev_balanced` |
+| MM-Vet | `MMVet` | JSON/JSONL manifest | `test` |
 
-| Interface | Benchmarks |
-| --- | --- |
-| Native dataset loader | VQAv2, TextVQA, VizWiz, MMBench, ScienceQA, POPE, MME |
-| Normalized JSON/JSONL manifest | MMMU, GQA, MM-Vet (`--dataset MMVet`) |
+Model weights and datasets are downloaded separately. The model ID can be replaced with a local snapshot:
 
-Run `python scripts/evaluate.py --help` for every option.
+```bash
+export MODEL_PATH="Qwen/Qwen2.5-VL-7B-Instruct"
+```
 
-## Native-loader example
+## Native-loader evaluation
+
+For example, run MMBench with a 64-token budget:
 
 ```bash
 python scripts/evaluate.py \
@@ -28,20 +41,27 @@ python scripts/evaluate.py \
   --output-dir outputs/mmbench_en_b64
 ```
 
-For POPE, use `--image-dir` when the COCO images are stored separately from the annotation files.
+For POPE, set `--image-dir` when the images are stored separately from the annotation files.
 
-## Manifest example
+## Normalized manifests
 
-Each JSON or JSONL row must contain `id`, `image_path`, `question`, and either `answer` or `answers`. Multiple-choice rows additionally use `options` as `[label, text]` pairs.
+MMMU, GQA, and MM-Vet require a normalized JSON/JSONL manifest. Each sample contains:
+
+| Field | Description |
+| :--- | :--- |
+| `id` | Sample identifier |
+| `image_path` | Path to the sample image |
+| `question` | Question text |
+| `answer` or `answers` | One reference answer or a list of answers |
+| `options` | For multiple-choice questions: a list of `[label, text]` pairs |
+
+For JSONL, write one complete JSON object per line. One record looks like:
 
 ```json
-{
-  "id": "sample-001",
-  "image_path": "/path/to/image.jpg",
-  "question": "What is shown in the image?",
-  "answer": "a boat"
-}
+{"id": "sample-001", "image_path": "/path/to/image.jpg", "question": "What is shown in the image?", "answer": "a boat"}
 ```
+
+Run a manifest-backed benchmark with:
 
 ```bash
 python scripts/evaluate.py \
@@ -53,46 +73,48 @@ python scripts/evaluate.py \
   --output-dir outputs/mmmu_b64
 ```
 
-## Outputs
+## Runtime options
+
+| Option | Default / accepted values | Purpose |
+| :--- | :--- | :--- |
+| `--budget` | Required: `32`, `64`, `128`, `192` | Number of visual tokens to retain |
+| `--grid-size` | `4`, `5`, `8`, `9` by budget | Override the default coarse grid |
+| `--split` | See the benchmark table | Dataset split |
+| `--mmbench-lang` | `en`; also `cn`, `cc` | MMBench language |
+| `--max-images` | `0` (all samples) | Limit the number of evaluated images |
+| `--sample-offset` | `0` | Starting sample offset |
+| `--max-new-tokens` | `1024` | Generation limit |
+| `--seed` | `42` | Random seed |
+| `--device` | `cuda:0` | Model device |
+
+List all options with `python scripts/evaluate.py --help`.
+
+## Outputs and scoring
 
 | Output | Contents |
-| --- | --- |
-| `per_sample.csv` | Predictions, local scores, selected indices, regional budgets, and timing |
-| `summary.json` | Aggregate local metric and run metadata |
-| `run_config.json` | Complete command-line configuration |
-| `image_cache/` | Images decoded from parquet-backed datasets when required |
-
-MM-Vet intentionally receives no local score because its official evaluation uses an external judge. Use `per_sample.csv` with the official evaluator. Official leaderboard scripts remain authoritative for every benchmark.
-
-## Default splits
-
-The evaluator uses these defaults when `--split` is omitted.
-
-| Benchmark / CLI name | Default split |
 | :--- | :--- |
-| `VQAv2` | `val` |
-| `TextVQA` | `val` |
-| `VizWiz` | `val` |
-| `MMBench` | `dev` |
-| `ScienceQA` | `test` |
-| `POPE` | `adversarial` |
-| `MME` | `test` |
-| `MMMU` | `validation` |
-| `GQA` | `testdev_balanced` |
-| `MMVet` | `test` |
+| `summary.json` | Aggregate metrics and run metadata |
+| `per_sample.csv` | Predictions, per-sample scores, selected indices, regional budgets, and timing |
+| `run_config.json` | Model and evaluation parameters |
+| `image_cache/` | Decoded images for parquet-backed datasets, when required |
 
-## Reproducibility Checks
+MM-Vet uses an external judge and therefore receives no local score. Submit the predictions in `per_sample.csv` to the official evaluator. Official leaderboard scripts remain authoritative for each benchmark.
 
-The allocator tests do not require model weights or benchmark data:
+## Reproducibility checks
+
+The released settings are recorded in [configs/qwen2_5_vl_7b.json](../configs/qwen2_5_vl_7b.json). Run the allocator regression checks without model weights or CUDA:
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-Before publishing a release or archive, scan the repository for common identity and machine-specific strings:
+<details>
+<summary>Metadata check for an anonymized archive</summary>
+
+A separate maintenance script checks for common identity and machine-specific strings:
 
 ```bash
 python scripts/check_anonymity.py
 ```
 
-The released model and budget configuration is recorded in [`configs/qwen2_5_vl_7b.json`](../configs/qwen2_5_vl_7b.json).
+</details>
